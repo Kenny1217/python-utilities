@@ -33,20 +33,30 @@ class HashicorpVaultConnector:
             if vault_secret:
                 secret_data = vault_secret.get('data', {}).get('data', {}).get(secret_name)
                 if secret_data:
-                    print(f"Data in secret {secret_name} retrieved")
+                    print(f"Secret retrieved")
                     return secret_data
                 else:
-                    print(f"No data in the secret: {secret_name}")
+                    print(f"No data found in the secret")
                     return None
             else:
-                print(f"No secret found at path: {secret_path}")
+                print(f"No secret found")
                 return None
         except Exception as e:
             print(f"An error occurred while retrieving vault secret: {e}")
             return None
 
-    def write_vault_secret(self):
-        print()
+    def write_vault_secret(self, mount_point, secret_path, secret_data):
+        try:
+            self.client.secrets.kv.v2.create_or_update_secret(mount_point=mount_point, path=secret_path ,secret=secret_data )
+            print("Secret added to vault")
+            return True
+        except Exception as e:
+            print(f"An error occurred while writing secret to vault: {e}")
+            return False
     
-    def delete_vault_secret(self):
-        print()
+    def delete_vault_secret(self, mount_point, secret_path, secret_name):
+        try:
+            print()
+        except Exception as e:
+            print(f"An error occurred while deleting secret from vault: {e}")
+            return False
