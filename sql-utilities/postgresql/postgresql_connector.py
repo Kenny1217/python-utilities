@@ -2,7 +2,7 @@ import psycopg2
 from psycopg2 import OperationalError
 
 
-class PostgreSQLDatabase:
+class DatabaseConnector:
     def __init__(self, dbname, host, port, user, password):
         self.dbname = dbname
         self.host = host
@@ -28,6 +28,8 @@ class PostgreSQLDatabase:
             print(f"Error: Unable to connect to the database: {e}")
 
     def close(self):
-        self.cursor.close()
-        self.connection.close
+        if self.cursor:
+            self.cursor.close()
+        if self.connection:
+            self.connection.close()
         print(f"Connection closed")
